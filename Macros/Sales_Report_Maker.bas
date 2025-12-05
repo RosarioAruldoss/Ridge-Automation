@@ -240,7 +240,7 @@ Private Function ValidateKeyColumns(ws As Worksheet, keyCols As Variant) As Bool
         Else
             For r = 2 To lastRow
                 val = UCase$(Trim$(CStr(ws.Cells(r, c).Value)))
-                If val = "" Or val = "N/A" Or val = "NA" Or val = "UNASSIGNED" Then
+                If val = "N/A" Or val = "NA" Or val = "UNASSIGNED" Then
                     badCols = badCols & vbCrLf & keyCols(i)
                     ValidateKeyColumns = False
                     Exit For
@@ -250,7 +250,7 @@ Private Function ValidateKeyColumns(ws As Worksheet, keyCols As Variant) As Bool
     Next i
 
     If Not ValidateKeyColumns Then
-        MsgBox "The following key columns contain blanks or N/A / UNASSIGNED:" & _
+        MsgBox "The following key columns contain N/A / UNASSIGNED:" & _
                vbCrLf & badCols & vbCrLf & vbCrLf & _
                "Fix the data and run the macro again.", vbCritical
     End If
