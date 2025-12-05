@@ -1,0 +1,29 @@
+You and me are going to build a most efficient dynamic macro. 
+I will give you an outline first. 
+	I create a manual report  which I call the master report in Excel. From the data in the master report, with filtering the data 
+as well as removing the fields, we get the data for the other reports. There are totally 7 reports that are derived from the master report data. 
+
+Here's the detailed instruction.
+1st step. 
+	Read the format in which the POD date is in. 
+To filter the overall data ask for the date range -  from date and well as the to date (also display the format in which the date has to be included for the filter to work. Also ask if the blanks has to be included or not. 
+Now extract the data within the filter range and create a new sheet with the sheet name - "Master"
+
+step 2: 
+To the master sheet, apply the following filters - Sales Loc: UAE / Country: UAE / Team: excluding Amir
+
+As per this filters you have to develop the code for the macros with the help of the details I am going to share with you. I will also give the file so that you can understand how to make the macros work in a dynamic manner. 
+I have given the file for reference. In this file, both the first row as well as the second row are not to be altered in the first place. You have to capture the rows which you will alter. even then no alteration should be done in the original file. you have to do all the alterations by creating a new sheet. The data capture happens based on the "POD date". the field title can be found in the first row. apply the date range filter to the POD Date column. First ask from which date the operation has to be performed, you also have to give option to include the blanks. Once I select the date with or without the blank, you have to capture all the rows with the mentioned POD Date including the blank if the selection includes the blanks. Capture all the data including the headers and create a new sheet with the name "Master". Now Give the Option to select the 
+Recepient	Sales Type	Filters Applied
+Nader & Tabrez	ALL	None
+Samer	RDG UAE	Loc: UAE / Country: UAE / Team: exluding Amir
+Prinu & Team	UAE Offline	Loc: UAE / Country: UAE / Team: Prinu
+Ramy	Bissell Online/Offline & Ramy Export	Team: Ramy & Heba / Section: HHH
+Amir	All Other Exports	Team: Amir
+John	UAE Online	Loc: UAE / Country: UAE / Group: Online / Section: excluding HHH
+Michel	Prime	Loc: Prime
+Rabih	RDG OMN	Loc: Oman
+		
+		
+	Office	Team: Office
+
