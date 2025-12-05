@@ -10,7 +10,12 @@ To filter the overall data ask for the date range -  from date and well as the t
 Now extract the data within the filter range and create a new sheet with the sheet name - "Master"
 
 step 2: 
-To the master sheet, apply the following filters - Sales Loc: UAE / Country: UAE / Team: excluding Amir
+To the master sheet, apply the following filters - (Sales Loc: UAE) / (Country: UAE) / (Team: excluding Amir)
+whatever the resultant data is there after applying the filters, create a new sheet with the name - "Samer"
+
+Step 3:
+To the master sheet, apply the following filters - (Sales Loc: UAE) / (Country: UAE) / (Team: Prinu)
+whatever the resultant data is there after applying the filters, create a new sheet with the name - "Prinu & Team"
 
 As per this filters you have to develop the code for the macros with the help of the details I am going to share with you. I will also give the file so that you can understand how to make the macros work in a dynamic manner. 
 I have given the file for reference. In this file, both the first row as well as the second row are not to be altered in the first place. You have to capture the rows which you will alter. even then no alteration should be done in the original file. you have to do all the alterations by creating a new sheet. The data capture happens based on the "POD date". the field title can be found in the first row. apply the date range filter to the POD Date column. First ask from which date the operation has to be performed, you also have to give option to include the blanks. Once I select the date with or without the blank, you have to capture all the rows with the mentioned POD Date including the blank if the selection includes the blanks. Capture all the data including the headers and create a new sheet with the name "Master". Now Give the Option to select the 
@@ -27,3 +32,82 @@ Rabih	RDG OMN	Loc: Oman
 		
 	Office	Team: Office
 
+Acct Num
+Cust Name
+Tax Reg No
+Sales Channel Code
+Group Name
+Cust Class
+Territory
+Inv Num
+Trx Date
+Order
+Ordered Date
+Expiration Date
+Batch Code
+Source
+Salesrep
+Salesrep
+LPO Num
+Cur
+E.Rate
+Comments
+Pod On
+Term Due Date
+Term Desc
+Return Ref
+Rtn Reason
+Line#
+Brand Code
+Brand Desc
+Item Code
+Item Desc
+Prom Item
+Prom Desc
+Quantity Ordered
+Uom
+Inv Qty
+Unit SP
+Disc Ups
+VRate
+VAT Amt
+Tax Recovery
+ F Amt 
+ L Amt 
+Costed
+ Unit Cost 
+ GP 
+GP % 
+Promo/nonPromo
+Delivery No
+Delivery
+ Target 
+ -->FORMULA FIELDS<--
+Customer Name
+Area
+Item Description
+Promo/nonPromo
+Amount
+Country
+Supplier Item Code
+Section
+Section1
+Section Parent
+Total Item Cost
+GP Value
+GP %
+Group
+Merchandiser
+Sales Exec
+Sales Sup
+Team
+Sales Loc
+Sales Type
+Offline/Online
+Day
+POD Month
+POD Year
+POD Qtr
+SubBrand
+Item Category
+Item Family
