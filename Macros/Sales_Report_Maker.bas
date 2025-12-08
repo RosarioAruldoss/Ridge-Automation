@@ -8,9 +8,9 @@ Const SRC_DATA_FIRST_ROW As Long = 3      ' data in original manual report start
 
 Const MASTER_NAME As String = "Master"
 
-' ===========================================================
+
 ' Entry point: build Master + all 7 reports
-' ===========================================================
+
 Sub Build_All_Reports_From_Master()
     Dim wsSrc As Worksheet
     Dim wsMaster As Worksheet
@@ -50,17 +50,17 @@ Sub Build_All_Reports_From_Master()
         groupFilter:=Empty, sectionInclude:=Empty, sectionExclude:=Empty, _
         removeCols:=colsToRemove
 
-    ' Step 3: Prinu  (Sales Loc: UAE, Country: UAE, Team: Prinu)
-    CreateReportFromMaster wsMaster, "Prinu", _
+    ' Step 3: Prinu Raju  (Sales Loc: UAE, Country: UAE, Team: Prinu Raju)
+    CreateReportFromMaster wsMaster, "Prinu Raju", _
         salesLoc:="UAE", country:="UAE", _
-        teamInclude:="Prinu", teamExclude:=Empty, _
+        teamInclude:="Prinu Raju", teamExclude:=Empty, _
         groupFilter:=Empty, sectionInclude:=Empty, sectionExclude:=Empty, _
         removeCols:=colsToRemove
 
-    ' Step 4: Ramy  (Team: Ramy or Heba, Section: HHH)
+    ' Step 4: Ramy Hegazy  (Team: Ramy Hegazy or Heba Serhal, Section: HHH)
     CreateReportFromMaster wsMaster, "Ramy", _
         salesLoc:=Empty, country:=Empty, _
-        teamInclude:=Array("Ramy", "Heba"), teamExclude:=Empty, _
+        teamInclude:=Array("Ramy Hegazy", "Heba Serhal"), teamExclude:=Empty, _
         groupFilter:=Empty, sectionInclude:="HHH", sectionExclude:=Empty, _
         removeCols:=colsToRemove
 
@@ -105,9 +105,9 @@ CleanFail:
     Resume CleanExit
 End Sub
 
-' ===========================================================
+
 ' Step 1 – Build Master sheet from POD date filter
-' ===========================================================
+
 Private Function CreateFilteredMaster(wsSrc As Worksheet) As Worksheet
     Dim podCol As Long, lastRow As Long, lastCol As Long
     Dim r As Long
@@ -306,7 +306,7 @@ Private Sub CreateReportFromMaster( _
 
     If Not IsEmpty(teamInclude) And colTeam > 0 Then
         If IsArray(teamInclude) Then
-            ' Handles Ramy & Heba (2 values)
+            ' Handles Ramy Hegazy & Heba Serhal (2 values)
             rng.AutoFilter Field:=colTeam, _
                 Criteria1:=teamInclude(LBound(teamInclude)), _
                 Operator:=xlOr, _
