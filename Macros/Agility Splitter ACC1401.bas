@@ -1,11 +1,14 @@
 Attribute VB_Name = "Module1"
+
 Sub SplitSalesData()
-    ' Turn off settings to speed up the macro
-    Application.ScreenUpdating = False
+
+    ' turning off the screen updates for improved performance of the macro
+
+    Application.ScreenUpdating = False 'screen updating off
     Application.Calculation = xlCalculationManual
     Application.EnableEvents = False
     
-    On Error GoTo ErrorHandler ' Jump to error handling if something goes wrong
+    On Error GoTo ErrorHandler ' If there's any error, it will jump to the ErrorHandler section
 
     Dim ws As Worksheet
     Dim LastRow As Long
@@ -48,10 +51,10 @@ Sub SplitSalesData()
     Copy3.Offset(Copy3.Rows.Count + 2, 0).Insert Shift:=xlDown
     Set Copy4 = Copy3.Offset(Copy3.Rows.Count + 2, 0).Resize(DataRange.Rows.Count, DataRange.Columns.Count)
     
-    ' 1. Change Column P for each copy
+    ' 1. Assign names to Column P (16) for each copy.
     Copy1.Columns(16).Value = "Mohamed Saleh"
     Copy2.Columns(16).Value = "Siraje Zeidan"
-    Copy3.Columns(16).Value = "Hafez Ali"
+    Copy3.Columns(16).Value = "Anees Babu Kozhisseri"
     Copy4.Columns(16).Value = "Mahammed Rafik"
     
     ' 2. Copy Column P from each copy to BN, BO, BP, BQ
@@ -67,13 +70,12 @@ Sub SplitSalesData()
     Copy2.Columns(16).Copy Destination:=Copy2.Columns(68)
     Copy3.Columns(16).Copy Destination:=Copy3.Columns(68)
     Copy4.Columns(16).Copy Destination:=Copy4.Columns(68)
-    Copy1.Columns(16).Copy Destination:=Copy1.Columns(69)
-    Copy2.Columns(16).Copy Destination:=Copy2.Columns(69)
-    Copy3.Columns(16).Copy Destination:=Copy3.Columns(69)
-    Copy4.Columns(16).Copy Destination:=Copy4.Columns(69)
-    
-    ' 3. Change "Mahammed Rafik" in Column BQ to "Prinu Raju"
-    Copy4.Columns(70).Copy Destination:=Copy4.Columns(69)
+
+       
+    ' 3. Change "Mahammed Rafik" & "Anees Babu Kozhisseri" in Column BP to "Prinu Raju"
+    Copy4.Columns(69).Copy Destination:=Copy3.Columns(68)
+    Copy4.Columns(69).Copy Destination:=Copy4.Columns(68)
+
     
     ' 4. Apply different formulas to Column AG for each copy based on the original AG value
 ' The Formula property with relative references will auto-adjust for each row when applied to the entire range.
@@ -105,24 +107,24 @@ Next i
 ' Clear the clipboard after the paste operations to avoid any future paste errors
 Application.CutCopyMode = False
     
-    ' 6a. For Column BC, set the formula to be the same as Column AG (using R1C1 to ensure dynamic behavior)
-    Copy1.Columns(55).FormulaR1C1 = Copy1.Columns(33).FormulaR1C1
-    Copy2.Columns(55).FormulaR1C1 = Copy2.Columns(33).FormulaR1C1
-    Copy3.Columns(55).FormulaR1C1 = Copy3.Columns(33).FormulaR1C1
-    Copy4.Columns(55).FormulaR1C1 = Copy4.Columns(33).FormulaR1C1
+    ' 6a. For Column BD, set the formula to be the same as Column AG (using R1C1 to ensure dynamic behavior)
+    Copy1.Columns(56).FormulaR1C1 = Copy1.Columns(33).FormulaR1C1
+    Copy2.Columns(56).FormulaR1C1 = Copy2.Columns(33).FormulaR1C1
+    Copy3.Columns(56).FormulaR1C1 = Copy3.Columns(33).FormulaR1C1
+    Copy4.Columns(56).FormulaR1C1 = Copy4.Columns(33).FormulaR1C1
     
     ' 6b. Copy BC to BJ and BK by setting the same dynamic formula
     ' For BJ (Column 62)
-    Copy1.Columns(62).FormulaR1C1 = Copy1.Columns(55).FormulaR1C1
-    Copy2.Columns(62).FormulaR1C1 = Copy2.Columns(55).FormulaR1C1
-    Copy3.Columns(62).FormulaR1C1 = Copy3.Columns(55).FormulaR1C1
-    Copy4.Columns(62).FormulaR1C1 = Copy4.Columns(55).FormulaR1C1
+    Copy1.Columns(62).FormulaR1C1 = Copy1.Columns(56).FormulaR1C1
+    Copy2.Columns(62).FormulaR1C1 = Copy2.Columns(56).FormulaR1C1
+    Copy3.Columns(62).FormulaR1C1 = Copy3.Columns(56).FormulaR1C1
+    Copy4.Columns(62).FormulaR1C1 = Copy4.Columns(56).FormulaR1C1
 
     ' For BK (Column 63)
-    Copy1.Columns(63).FormulaR1C1 = Copy1.Columns(55).FormulaR1C1
-    Copy2.Columns(63).FormulaR1C1 = Copy2.Columns(55).FormulaR1C1
-    Copy3.Columns(63).FormulaR1C1 = Copy3.Columns(55).FormulaR1C1
-    Copy4.Columns(63).FormulaR1C1 = Copy4.Columns(55).FormulaR1C1
+    Copy1.Columns(63).FormulaR1C1 = Copy1.Columns(56).FormulaR1C1
+    Copy2.Columns(63).FormulaR1C1 = Copy2.Columns(56).FormulaR1C1
+    Copy3.Columns(63).FormulaR1C1 = Copy3.Columns(56).FormulaR1C1
+    Copy4.Columns(63).FormulaR1C1 = Copy4.Columns(56).FormulaR1C1
     
     ' 7. Convert each copy to values INDIVIDUALLY to avoid the "multiple selections" error
     Copy1.Copy
