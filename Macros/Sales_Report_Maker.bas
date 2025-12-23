@@ -1,7 +1,9 @@
+'complex code build. on hold temporarily...
 Option Explicit
 
-' Original manual report:
+' From the original report, the first row contains the headers and the second row contains the formulas.
 '   Row 1 = header
+'  Row 2 = formulas (ignored in extraction)
 '   Row 3 onward = data (row 2 is ignored in extraction)
 Const SRC_HEADER_ROW As Long = 1          ' header in original manual report
 Const SRC_DATA_FIRST_ROW As Long = 3      ' data in original manual report starts at row 3
