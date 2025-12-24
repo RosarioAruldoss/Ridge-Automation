@@ -80,6 +80,7 @@
     'copy paste the filtered data in the sheet named - 'RABIH'
 
 'Now the process is complete and it can be terminated.
+
 Option Explicit
 
 '===========================================================
@@ -119,51 +120,51 @@ Public Sub Build_7_Reports_From_Sheet1()
 
     ' Step 5: SAMER
     CreateReport wsSrc, "SAMER", _
-        SalesLoc:="UAE", Country:="UAE", _
-        TeamInclude:=Empty, TeamExclude:="Amir Hossein Khaksar", _
-        GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
+        salesLoc:="UAE", country:="UAE", _
+        teamInclude:=Empty, teamExclude:="Amir Hossein Khaksar", _
+        groupFilter:=Empty, sectionInclude:=Empty, sectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 6: PRINU
     CreateReport wsSrc, "PRINU", _
-        SalesLoc:="UAE", Country:="UAE", _
-        TeamInclude:="Prinu Raju", TeamExclude:=Empty, _
-        GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
+        salesLoc:="UAE", country:="UAE", _
+        teamInclude:="Prinu Raju", teamExclude:=Empty, _
+        groupFilter:=Empty, sectionInclude:=Empty, sectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 7: RAMY
     CreateReport wsSrc, "RAMY", _
-        SalesLoc:=Empty, Country:=Empty, _
-        TeamInclude:=Array("Ramy Hegazy", "Heba Serhal"), TeamExclude:=Empty, _
-        GroupFilter:=Empty, SectionInclude:="HHH", SectionExclude:=Empty, _
+        salesLoc:=Empty, country:=Empty, _
+        teamInclude:=Array("Ramy Hegazy", "Heba Serhal"), teamExclude:=Empty, _
+        groupFilter:=Empty, sectionInclude:="HHH", sectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 8: AMIR
     CreateReport wsSrc, "AMIR", _
-        SalesLoc:=Empty, Country:=Empty, _
-        TeamInclude:="Amir Hossein Khaksar", TeamExclude:=Empty, _
-        GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
+        salesLoc:=Empty, country:=Empty, _
+        teamInclude:="Amir Hossein Khaksar", teamExclude:=Empty, _
+        groupFilter:=Empty, sectionInclude:=Empty, sectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 9: JOHNNY
     CreateReport wsSrc, "JOHNNY", _
-        SalesLoc:="UAE", Country:="UAE", _
-        TeamInclude:=Empty, TeamExclude:=Empty, _
-        GroupFilter:="Online", SectionInclude:=Empty, SectionExclude:="HHH", _
+        salesLoc:="UAE", country:="UAE", _
+        teamInclude:=Empty, teamExclude:=Empty, _
+        groupFilter:="Online", sectionInclude:=Empty, sectionExclude:="HHH", _
         removeCols:=colsToRemove
 
     ' Step 10: MICHEL (no column deletion)
     CreateReport wsSrc, "MICHEL", _
-        SalesLoc:="PRIME", Country:=Empty, _
-        TeamInclude:=Empty, TeamExclude:=Empty, _
-        GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
+        salesLoc:="PRIME", country:=Empty, _
+        teamInclude:=Empty, teamExclude:=Empty, _
+        groupFilter:=Empty, sectionInclude:=Empty, sectionExclude:=Empty, _
         removeCols:=Empty
 
     ' Step 11: RABIH (no column deletion per your latest instruction)
     CreateReport wsSrc, "RABIH", _
-        SalesLoc:="OMAN", Country:=Empty, _
-        TeamInclude:=Empty, TeamExclude:=Empty, _
-        GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
+        salesLoc:="OMAN", country:=Empty, _
+        teamInclude:=Empty, teamExclude:=Empty, _
+        groupFilter:=Empty, sectionInclude:=Empty, sectionExclude:=Empty, _
         removeCols:=Empty
 
     ' Clear filter on source
@@ -182,9 +183,9 @@ CleanFail:
     Resume CleanExit
 End Sub
 
-
+'===========================================================
 ' Step 1: Remove blank rows (entire row blank based on Col A)
-
+'===========================================================
 Private Sub RemoveBlankRows(ByVal ws As Worksheet)
     Dim lastRow As Long
     lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
@@ -198,9 +199,9 @@ Private Sub RemoveBlankRows(ByVal ws As Worksheet)
     Next r
 End Sub
 
-
+'===========================================================
 ' Step 2: Ensure report sheet exists and is cleared
-
+'===========================================================
 Private Sub EnsureReportSheet(ByVal sheetName As String)
     Dim ws As Worksheet
 
@@ -216,18 +217,18 @@ Private Sub EnsureReportSheet(ByVal sheetName As String)
     End If
 End Sub
 
-
+'===========================================================
 ' Core: Create a report sheet by applying filters on Sheet1
-
+'===========================================================
 Private Sub CreateReport( _
     ByVal wsSrc As Worksheet, _
     ByVal reportName As String, _
-    ByVal SalesLoc As Variant, _
-    ByVal Country As Variant, _
-    ByVal TeamInclude As Variant, _
-    ByVal eamExclude As Variant, _
-    ByVal GroupFilter As Variant, _
-    ByVal SectionInclude As Variant, _
+    ByVal salesLoc As Variant, _
+    ByVal country As Variant, _
+    ByVal teamInclude As Variant, _
+    ByVal teamExclude As Variant, _
+    ByVal groupFilter As Variant, _
+    ByVal sectionInclude As Variant, _
     ByVal sectionExclude As Variant, _
     ByVal removeCols As Variant)
 
@@ -248,42 +249,42 @@ Private Sub CreateReport( _
 
     ' Find needed columns (header row = 1)
     Dim colSalesLoc As Long, colCountry As Long, colTeam As Long, colGroup As Long, colSection As Long
-    colSalesLoc = FindHeaderColumn(wsSrc, "SalesLoc")
+    colSalesLoc = FindHeaderColumn(wsSrc, "Sales Loc")
     colCountry = FindHeaderColumn(wsSrc, "Country")
     colTeam = FindHeaderColumn(wsSrc, "Team")
     colGroup = FindHeaderColumn(wsSrc, "Group")
     colSection = FindHeaderColumn(wsSrc, "Section")
 
     ' Apply filters only when criteria provided
-    If Not IsEmpty(SalesLoc) And colSalesLoc > 0 Then
-        rng.AutoFilter Field:=colSalesLoc, Criteria1:=SalesLoc
+    If Not IsEmpty(salesLoc) And colSalesLoc > 0 Then
+        rng.AutoFilter Field:=colSalesLoc, Criteria1:=salesLoc
     End If
 
-    If Not IsEmpty(Country) And colCountry > 0 Then
-        rng.AutoFilter Field:=colCountry, Criteria1:=Country
+    If Not IsEmpty(country) And colCountry > 0 Then
+        rng.AutoFilter Field:=colCountry, Criteria1:=country
     End If
 
-    If Not IsEmpty(TeamInclude) And colTeam > 0 Then
-        If IsArray(TeamInclude) Then
+    If Not IsEmpty(teamInclude) And colTeam > 0 Then
+        If IsArray(teamInclude) Then
             rng.AutoFilter Field:=colTeam, _
-                Criteria1:=TeamInclude(LBound(TeamInclude)), _
+                Criteria1:=teamInclude(LBound(teamInclude)), _
                 Operator:=xlOr, _
-                Criteria2:=TeamInclude(UBound(TeamInclude))
+                Criteria2:=teamInclude(UBound(teamInclude))
         Else
-            rng.AutoFilter Field:=colTeam, Criteria1:=TeamInclude
+            rng.AutoFilter Field:=colTeam, Criteria1:=teamInclude
         End If
     End If
 
-    If Not IsEmpty(eamExclude) And colTeam > 0 Then
-        rng.AutoFilter Field:=colTeam, Criteria1:="<>" & CStr(TeamExclude)
+    If Not IsEmpty(teamExclude) And colTeam > 0 Then
+        rng.AutoFilter Field:=colTeam, Criteria1:="<>" & CStr(teamExclude)
     End If
 
-    If Not IsEmpty(GroupFilter) And colGroup > 0 Then
-        rng.AutoFilter Field:=colGroup, Criteria1:=GroupFilter
+    If Not IsEmpty(groupFilter) And colGroup > 0 Then
+        rng.AutoFilter Field:=colGroup, Criteria1:=groupFilter
     End If
 
-    If Not IsEmpty(SectionInclude) And colSection > 0 Then
-        rng.AutoFilter Field:=colSection, Criteria1:=SectionInclude
+    If Not IsEmpty(sectionInclude) And colSection > 0 Then
+        rng.AutoFilter Field:=colSection, Criteria1:=sectionInclude
     End If
 
     If Not IsEmpty(sectionExclude) And colSection > 0 Then
