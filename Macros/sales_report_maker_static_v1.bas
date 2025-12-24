@@ -13,7 +13,7 @@
 'Quantity Ordered/Uom/Inv Qty/Unit SP/Disc Ups/VRate/VAT Amt/Tax Recovery/F Amt/L Amt/Costed/Unit Cost/GP/GP %/
 ' 'Promo/nonPromo'/Delivery No/Delivery/Target/Workweek/Customer Name/Area/
 '	Item Description/'Promo/nonPromo'	/Amount/	Country	/Supplier Item Code/	Section/	Section1	/Section Parent	
-'/Total Item Cost/GP Value/GP %/ Group	/Merchandiser	/Sales Exec	/Sales Sup	/Team/Sales Loc/Sales Type/'Offline/Online'
+'/Total Item Cost/GP Value/GP %/ Group	/Merchandiser	/Sales Exec	/Sales Sup	/Team/SalesLoc/Sales Type/'Offline/Online'
 '/Day/POD Month/POD Year/POD Qtr/SubBrand/Item Category/Item Family
 
 
@@ -24,7 +24,7 @@
 
 'STEP 5: THE FILTERS AND DEDUCTION FOR SHEET - 'SAMER' IS AS FOLLOWS:
     'FILTER: HEADER : 
-        'Sales Loc'  VALUE : 'UAE'
+        'SalesLoc'  VALUE : 'UAE'
         'Country'    VALUE : 'UAE'
         'Team'       VALUE : Exclude 'Amir Hossein Khaksar'
     'DELETE COLUMNS with the headers - (Costed)(Unit Cost)(GP)(GP %)(Workweek)(Total Item Cost)(GP Value)(GP %)
@@ -33,7 +33,7 @@
 
 'STEP 6: THE FILTERS AND DEDUCTION FOR SHEET - 'PRINU' IS AS FOLLOWS:
     'FILTER: HEADER : 
-        'Sales Loc'  VALUE : 'UAE'
+        'SalesLoc'  VALUE : 'UAE'
         'Country'    VALUE : 'UAE'
         'Team'       VALUE : 'Prinu Raju'
     'DELETE COLUMNS with the headers - (Costed)(Unit Cost)(GP)(GP %)(Workweek)(Total Item Cost)(GP Value)(GP %)
@@ -57,7 +57,7 @@
 
 'STEP 9: THE FILTERS AND DEDUCTION FOR SHEET - 'JOHNNY' IS AS FOLLOWS:
     'FILTER: HEADER : 
-        'Sales Loc'  VALUE : 'UAE'
+        'SalesLoc'  VALUE : 'UAE'
         'Country'    VALUE : 'UAE'
         'Group'      VALUE : 'Online'
         'Section'    VALUE : Excluding 'HHH'
@@ -67,13 +67,13 @@
 
 'STEP 10: THE FILTERS AND DEDUCTION FOR SHEET - 'MICHEL' IS AS FOLLOWS:
     'FILTER: HEADER : 
-        'Sales Loc'  VALUE : 'PRIME'
+        'SalesLoc'  VALUE : 'PRIME'
 
     'copy paste the filtered data in the sheet named - 'MICHEL'
 
 'STEP 11: THE FILTERS AND DEDUCTION FOR SHEET - 'RABIH' IS AS FOLLOWS:
     'FILTER: HEADER : 
-        'Sales Loc'  VALUE : 'OMAN'
+        'SalesLoc'  VALUE : 'OMAN'
 
     'DELETE COLUMNS with the headers - (Costed)(Unit Cost)(GP)(GP %)(Workweek)(Total Item Cost)(GP Value)(GP %)
     
@@ -119,49 +119,49 @@ Public Sub Build_7_Reports_From_Sheet1()
 
     ' Step 5: SAMER
     CreateReport wsSrc, "SAMER", _
-        Sales Loc:="UAE", Country:="UAE", _
+        SalesLoc:="UAE", Country:="UAE", _
         TeamInclude:=Empty, TeamExclude:="Amir Hossein Khaksar", _
         GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 6: PRINU
     CreateReport wsSrc, "PRINU", _
-        Sales Loc:="UAE", Country:="UAE", _
+        SalesLoc:="UAE", Country:="UAE", _
         TeamInclude:="Prinu Raju", TeamExclude:=Empty, _
         GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 7: RAMY
     CreateReport wsSrc, "RAMY", _
-        Sales Loc:=Empty, Country:=Empty, _
+        SalesLoc:=Empty, Country:=Empty, _
         TeamInclude:=Array("Ramy Hegazy", "Heba Serhal"), TeamExclude:=Empty, _
         GroupFilter:=Empty, SectionInclude:="HHH", SectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 8: AMIR
     CreateReport wsSrc, "AMIR", _
-        Sales Loc:=Empty, Country:=Empty, _
+        SalesLoc:=Empty, Country:=Empty, _
         TeamInclude:="Amir Hossein Khaksar", TeamExclude:=Empty, _
         GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
         removeCols:=colsToRemove
 
     ' Step 9: JOHNNY
     CreateReport wsSrc, "JOHNNY", _
-        Sales Loc:="UAE", Country:="UAE", _
+        SalesLoc:="UAE", Country:="UAE", _
         TeamInclude:=Empty, TeamExclude:=Empty, _
         GroupFilter:="Online", SectionInclude:=Empty, SectionExclude:="HHH", _
         removeCols:=colsToRemove
 
     ' Step 10: MICHEL (no column deletion)
     CreateReport wsSrc, "MICHEL", _
-        Sales Loc:="PRIME", Country:=Empty, _
+        SalesLoc:="PRIME", Country:=Empty, _
         TeamInclude:=Empty, TeamExclude:=Empty, _
         GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
         removeCols:=Empty
 
     ' Step 11: RABIH (no column deletion per your latest instruction)
     CreateReport wsSrc, "RABIH", _
-        Sales Loc:="OMAN", Country:=Empty, _
+        SalesLoc:="OMAN", Country:=Empty, _
         TeamInclude:=Empty, TeamExclude:=Empty, _
         GroupFilter:=Empty, SectionInclude:=Empty, SectionExclude:=Empty, _
         removeCols:=Empty
@@ -222,7 +222,7 @@ End Sub
 Private Sub CreateReport( _
     ByVal wsSrc As Worksheet, _
     ByVal reportName As String, _
-    ByVal Sales Loc As Variant, _
+    ByVal SalesLoc As Variant, _
     ByVal Country As Variant, _
     ByVal TeamInclude As Variant, _
     ByVal eamExclude As Variant, _
@@ -248,15 +248,15 @@ Private Sub CreateReport( _
 
     ' Find needed columns (header row = 1)
     Dim colSalesLoc As Long, colCountry As Long, colTeam As Long, colGroup As Long, colSection As Long
-    colSalesLoc = FindHeaderColumn(wsSrc, "Sales Loc")
+    colSalesLoc = FindHeaderColumn(wsSrc, "SalesLoc")
     colCountry = FindHeaderColumn(wsSrc, "Country")
     colTeam = FindHeaderColumn(wsSrc, "Team")
     colGroup = FindHeaderColumn(wsSrc, "Group")
     colSection = FindHeaderColumn(wsSrc, "Section")
 
     ' Apply filters only when criteria provided
-    If Not IsEmpty(Sales Loc) And colSalesLoc > 0 Then
-        rng.AutoFilter Field:=colSalesLoc, Criteria1:=Sales Loc
+    If Not IsEmpty(SalesLoc) And colSalesLoc > 0 Then
+        rng.AutoFilter Field:=colSalesLoc, Criteria1:=SalesLoc
     End If
 
     If Not IsEmpty(Country) And colCountry > 0 Then
