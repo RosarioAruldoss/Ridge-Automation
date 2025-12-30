@@ -83,13 +83,11 @@
 
 Option Explicit
 
-'===========================================================
-' STATIC MACRO (one-click):
+' STATIC MACRO should work in one-click:
 ' 1) Sheet1: remove blank rows (Row 1 is header, data starts Row 2)
 ' 2) Create/refresh 7 sheets: SAMER, PRINU, RAMY, AMIR, JOHNNY, MICHEL, RABIH
 ' 3) From Sheet1 apply filters, copy result to each sheet
-' 4) For SAMER/PRINU/RAMY/AMIR/JOHNNY delete specific columns (by header)
-'===========================================================
+' 4) For SAMER/PRINU/RAMY/AMIR/JOHNNY/RABIH delete specific columns (by header)
 
 Public Sub Build_7_Reports_From_Sheet1()
     Dim wsSrc As Worksheet
