@@ -31,7 +31,7 @@ Sub SplitSalesData()
         GoTo SafeExit
     End If
     
-    ' Define the original data range (from row 2 to last row)
+    ' Define the original data range (from row 2 to last row.)
     Set DataRange = ws.Range("A2", ws.Cells(LastRow, "CB"))
     
     ' Copy the data 4 times, inserting two blank rows after each copy
