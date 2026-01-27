@@ -1,13 +1,17 @@
+'Open Code
+
 Option Explicit
 
+'Assign Macro to click (Include Function)
+
 Public Sub IsoscelesTriangle2_Click()
-    Milestone_CreateCopies_Rename_CopyPaste
+    Milestone_CreateCopies_Rename_CopyPaste 'function
 End Sub
 
 Public Sub Milestone_CreateCopies_Rename_CopyPaste()
 
     Dim newNames As Variant
-    newNames = Array("Samer", "Prinu", "Ramy", "Amir", "Johny", "Michel", "Rabih")
+    newNames = Array("Samer", "Prinu", "Ramy", "Amir", "Johny", "Michel", "Rabih") 'sheet names array (use if need more sheets)
 
     Dim wb As Workbook
     Set wb = ThisWorkbook
@@ -40,6 +44,7 @@ Public Sub Milestone_CreateCopies_Rename_CopyPaste()
         wsNew.Name = newNames(i)
 
         'Remove shapes copied from source
+        
         Dim shp As Shape
         For Each shp In wsNew.Shapes
             shp.Delete
@@ -48,7 +53,7 @@ Public Sub Milestone_CreateCopies_Rename_CopyPaste()
         wsNew.Cells.Clear
 
         rngToCopy.Copy
-        With wsNew.Range("A1")
+        With wsNew.Range("A1") 'copy the range to A1 address in new sheets
             .PasteSpecial Paste:=xlPasteValues
             .PasteSpecial Paste:=xlPasteFormats
         End With
@@ -69,10 +74,11 @@ CleanFail:
     Application.CutCopyMode = False
     Application.DisplayAlerts = True
     Application.ScreenUpdating = True
-    MsgBox "Macro stopped due to error: " & Err.Description, vbExclamation, "Milestone 1+Filters"
+    MsgBox "Macro stopped due to error: Check original data " & Err.Description, vbExclamation, "Milestone 1+Filters"
 End Sub
 
 Private Sub ApplyFiltersAndCreateFilteredSheets(ByVal wb As Workbook)
+'creating new sheet - filter rule (align with the array of sheets in previous section)
 
     '1) Samer -> Samer_F
     FilterAndCopyToNewSheet wb, "Samer", "Samer_F", _
@@ -134,7 +140,8 @@ Private Sub FilterAndCopyToNewSheet(ByVal wb As Workbook, _
     Dim ws As Worksheet
     Set ws = wb.Worksheets(sourceSheetName)
 
-    'Define used range (A1 to last used row/col)
+    'Defining used range (A1 to last used row/column)
+    
     Dim lastRow As Long, lastCol As Long
     lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
     lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
@@ -144,7 +151,8 @@ Private Sub FilterAndCopyToNewSheet(ByVal wb As Workbook, _
     Dim rng As Range
     Set rng = ws.Range(ws.Cells(1, 1), ws.Cells(lastRow, lastCol))
 
-    'Reset filters
+    'to reset filters
+    
     If ws.AutoFilterMode Then ws.AutoFilterMode = False
 
     'Apply filters sequentially
@@ -166,6 +174,7 @@ Private Sub FilterAndCopyToNewSheet(ByVal wb As Workbook, _
         End If
 
         'Apply filter
+        
         If UBound(criteriaArr) = 0 Then
             rng.AutoFilter Field:=colIndex, Criteria1:=criteriaArr(0)
         Else
@@ -173,11 +182,12 @@ Private Sub FilterAndCopyToNewSheet(ByVal wb As Workbook, _
         End If
     Next i
 
-    'Create/replace output sheet
+    'Create output sheet
+    
     Dim wsOut As Worksheet
     Set wsOut = CreateOrReplaceSheet(wb, outputSheetName)
 
-    'Copy visible (filtered) range to output sheet
+    'Copy visible only (filtered) range to output sheet
     Dim vis As Range
     On Error Resume Next
     Set vis = rng.SpecialCells(xlCellTypeVisible)
@@ -191,18 +201,18 @@ Private Sub FilterAndCopyToNewSheet(ByVal wb As Workbook, _
         wsOut.Range("A1").PasteSpecial Paste:=xlPasteFormats
         Application.CutCopyMode = False
     Else
-        'No visible rows (unlikely, but safe handling)
+        'no visible rows (unlikely, but safe handling)
         wsOut.Range("A1").Value = "No data after filters for: " & sourceSheetName
     End If
 
 CleanupFilters:
-    'Remove filters from source sheet
+    'remove filters from source sheet
     If ws.AutoFilterMode Then ws.AutoFilterMode = False
 
 End Sub
 
 Private Function GetHeaderColumnIndex(ByVal ws As Worksheet, ByVal headerName As String, ByVal lastCol As Long) As Long
-    'Find header in row 1, match exact text
+    'find header in row 1, match exact text
     Dim c As Long
     For c = 1 To lastCol
         If Trim$(CStr(ws.Cells(1, c).Value)) = headerName Then
@@ -232,7 +242,7 @@ End Function
 Private Sub DeleteBaseSheets(ByVal wb As Workbook)
 
     Dim sheetsToDelete As Variant
-    sheetsToDelete = Array("Samer", "Prinu", "Ramy", "Amir", "Johny", "Michel", "Rabih")
+    sheetsToDelete = Array("Samer", "Prinu", "Ramy", "Amir", "Johny", "Michel", "Rabih") 'update this too when needed. maintain as the original initial array.
 
     Dim i As Long
     Dim ws As Worksheet
@@ -255,6 +265,4 @@ Private Sub DeleteBaseSheets(ByVal wb As Workbook)
 
 End Sub
 
-
-
-
+'end of code
