@@ -1,99 +1,260 @@
-Sub ExtractListingStatusToNewWorkbook()
+Option Explicit
 
-    Dim wsSource As Worksheet
-    Dim wbNew As Workbook
-    Dim wsNew As Worksheet
-    Dim listingStatus As String
-    Dim tabName As String
-    Dim lastRow As Long, lastCol As Long
-    Dim rngData As Range, rngVisible As Range
-    Dim shp As Shape, shpCopy As Shape
-    Dim exportPath As String, originalPath As String, originalName As String
-    Dim filteredFileName As String
-    Dim cell As Range
+Public Sub IsoscelesTriangle2_Click()
+    Milestone_CreateCopies_Rename_CopyPaste
+End Sub
+
+Public Sub Milestone_CreateCopies_Rename_CopyPaste()
+
+    Dim newNames As Variant
+    newNames = Array("Samer", "Prinu", "Ramy", "Amir", "Johny", "Michel", "Rabih")
+
+    Dim wb As Workbook
+    Set wb = ThisWorkbook
 
     Application.ScreenUpdating = False
     Application.DisplayAlerts = False
 
-    ' Set source sheet
-    Set wsSource = ActiveSheet
+    On Error GoTo CleanFail
 
-    ' Get original file path
-    originalPath = ThisWorkbook.Path
-    originalName = ThisWorkbook.Name
-    originalName = Replace(originalName, ".xlsm", "")
+    Dim wsSrc As Worksheet
+    Set wsSrc = wb.Worksheets(1)
 
-    ' Prompt for filter keyword
-    listingStatus = InputBox("Enter the keyword to filter Listing Status (e.g., 'new', 'delisted'):", "Filter by Listing Status")
-    If Trim(listingStatus) = "" Then
-        MsgBox "❌ No input given. Operation cancelled.", vbExclamation
-        Exit Sub
-    End If
+    Dim lastRow As Long, lastCol As Long
+    lastRow = wsSrc.Cells(wsSrc.Rows.Count, "B").End(xlUp).Row
 
-    ' Prompt for tab name
-    tabName = InputBox("Enter the name for the output sheet/tab:", "Output Tab Name")
-    If Trim(tabName) = "" Then
-        MsgBox "❌ No sheet name provided. Operation cancelled.", vbExclamation
-        Exit Sub
-    End If
+    lastCol = wsSrc.Cells(1, wsSrc.Columns.Count).End(xlToLeft).Column
+    If lastCol < 2 Then lastCol = 2
 
-    ' Find the last row and column
-    lastRow = wsSource.Cells(wsSource.Rows.Count, "A").End(xlUp).Row
-    lastCol = wsSource.Cells(2, wsSource.Columns.Count).End(xlToLeft).Column
+    Dim rngToCopy As Range
+    Set rngToCopy = wsSrc.Range(wsSrc.Cells(1, 2), wsSrc.Cells(lastRow, lastCol)) 'B1:last
 
-    ' Define the full range from row 2 headers
-    Set rngData = wsSource.Range(wsSource.Cells(2, 1), wsSource.Cells(lastRow, lastCol))
+    Dim i As Long
+    For i = LBound(newNames) To UBound(newNames)
 
-    ' Apply filter on column 13 with partial match
-    If wsSource.AutoFilterMode Then wsSource.AutoFilterMode = False
-    rngData.AutoFilter Field:=13, Criteria1:="*" & listingStatus & "*"
+        Dim wsNew As Worksheet
 
-    ' Get visible data
-    On Error Resume Next
-    Set rngVisible = rngData.SpecialCells(xlCellTypeVisible)
-    On Error GoTo 0
+        wsSrc.Copy After:=wb.Worksheets(wb.Worksheets.Count)
+        Set wsNew = wb.Worksheets(wb.Worksheets.Count)
 
-    If rngVisible Is Nothing Then
-        MsgBox "❌ No rows found with Listing Status containing '" & listingStatus & "'.", vbExclamation
-        wsSource.AutoFilterMode = False
-        Exit Sub
-    End If
+        wsNew.Name = newNames(i)
 
-    ' Create a new workbook
-    Set wbNew = Workbooks.Add
-    Set wsNew = wbNew.Sheets(1)
-    wsNew.Name = tabName
+        'Remove shapes copied from source
+        Dim shp As Shape
+        For Each shp In wsNew.Shapes
+            shp.Delete
+        Next shp
 
-    ' Copy header row 1
-    wsSource.Rows(1).Copy Destination:=wsNew.Rows(1)
+        wsNew.Cells.Clear
 
-    ' Copy visible filtered data from row 2 onwards
-    rngVisible.Copy Destination:=wsNew.Cells(2, 1)
+        rngToCopy.Copy
+        With wsNew.Range("A1")
+            .PasteSpecial Paste:=xlPasteValues
+            .PasteSpecial Paste:=xlPasteFormats
+        End With
+        Application.CutCopyMode = False
 
-    ' Copy visible shapes/images
-    For Each shp In wsSource.Shapes
-        If Not Intersect(shp.TopLeftCell, rngVisible) Is Nothing Then
-            Set shpCopy = shp.Duplicate
-            shpCopy.Cut
-            wsNew.Paste
-            With wsNew.Shapes(wsNew.Shapes.Count)
-                .Top = wsNew.Cells(shp.TopLeftCell.Row, shp.TopLeftCell.Column).Top
-                .Left = wsNew.Cells(shp.TopLeftCell.Row, shp.TopLeftCell.Column).Left
-            End With
-        End If
-    Next shp
+    Next i
 
-    ' Save the new workbook in the same directory
-    filteredFileName = listingStatus & "_" & originalName & ".xlsx"
-    exportPath = originalPath & "\" & filteredFileName
-    wbNew.SaveAs Filename:=exportPath, FileFormat:=xlOpenXMLWorkbook
+    'Now apply filters in sequence and create _F sheets
+    ApplyFiltersAndCreateFilteredSheets wb
+    DeleteBaseSheets wb
 
-    ' Cleanup
-    wsSource.AutoFilterMode = False
-    Application.CutCopyMode = False
-    Application.ScreenUpdating = True
+CleanExit:
     Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+    Exit Sub
 
-    MsgBox "✅ Filtered data saved as '" & filteredFileName & "' in:" & vbNewLine & exportPath, vbInformation
+CleanFail:
+    Application.CutCopyMode = False
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+    MsgBox "Macro stopped due to error: " & Err.Description, vbExclamation, "Milestone 1+Filters"
+End Sub
+
+Private Sub ApplyFiltersAndCreateFilteredSheets(ByVal wb As Workbook)
+
+    '1) Samer -> Samer_F
+    FilterAndCopyToNewSheet wb, "Samer", "Samer_F", _
+        Array( _
+            Array("Sales Loc", Array("UAE")), _
+            Array("Country", Array("UAE")), _
+            Array("Team", Array("Johny Nevil", "Prinu Raju", "Ramy Hegazy")) _
+        )
+
+    '2) Prinu -> Prinu_F
+    FilterAndCopyToNewSheet wb, "Prinu", "Prinu_F", _
+        Array( _
+            Array("Sales Loc", Array("UAE")), _
+            Array("Country", Array("UAE")), _
+            Array("Team", Array("Prinu Raju")) _
+        )
+
+    '3) Ramy -> Ramy_F
+    FilterAndCopyToNewSheet wb, "Ramy", "Ramy_F", _
+        Array( _
+            Array("Team", Array("Johny Nevil", "Ramy Hegazy")), _
+            Array("Section", Array("HHH")) _
+        )
+
+    '4) Amir -> Amir_F
+    FilterAndCopyToNewSheet wb, "Amir", "Amir_F", _
+        Array( _
+            Array("Team", Array("Amir Hossein Khaksar")) _
+        )
+
+    '5) Johny -> Johny_F
+    FilterAndCopyToNewSheet wb, "Johny", "Johny_F", _
+        Array( _
+            Array("Sales Loc", Array("UAE")), _
+            Array("Country", Array("UAE")), _
+            Array("Team", Array("Johny Nevil")), _
+            Array("Section", Array("DPH", "LHH")) _
+        )
+
+    '6) Michel -> Michel_F
+    FilterAndCopyToNewSheet wb, "Michel", "Michel_F", _
+        Array( _
+            Array("Sales Loc", Array("PRIME")) _
+        )
+
+    '7) Rabih -> Rabih_F
+    FilterAndCopyToNewSheet wb, "Rabih", "Rabih_F", _
+        Array( _
+            Array("Sales Loc", Array("OMAN")) _
+        )
 
 End Sub
+
+Private Sub FilterAndCopyToNewSheet(ByVal wb As Workbook, _
+                                   ByVal sourceSheetName As String, _
+                                   ByVal outputSheetName As String, _
+                                   ByVal filters As Variant)
+
+    Dim ws As Worksheet
+    Set ws = wb.Worksheets(sourceSheetName)
+
+    'Define used range (A1 to last used row/col)
+    Dim lastRow As Long, lastCol As Long
+    lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+    lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+
+    If lastRow < 1 Or lastCol < 1 Then Exit Sub
+
+    Dim rng As Range
+    Set rng = ws.Range(ws.Cells(1, 1), ws.Cells(lastRow, lastCol))
+
+    'Reset filters
+    If ws.AutoFilterMode Then ws.AutoFilterMode = False
+
+    'Apply filters sequentially
+    Dim i As Long
+    For i = LBound(filters) To UBound(filters)
+
+        Dim headerName As String
+        headerName = CStr(filters(i)(0))
+
+        Dim criteriaArr As Variant
+        criteriaArr = filters(i)(1) 'Array of criteria values
+
+        Dim colIndex As Long
+        colIndex = GetHeaderColumnIndex(ws, headerName, lastCol)
+
+        If colIndex = 0 Then
+            MsgBox "Header not found on sheet '" & sourceSheetName & "': " & headerName, vbExclamation
+            GoTo CleanupFilters
+        End If
+
+        'Apply filter
+        If UBound(criteriaArr) = 0 Then
+            rng.AutoFilter Field:=colIndex, Criteria1:=criteriaArr(0)
+        Else
+            rng.AutoFilter Field:=colIndex, Criteria1:=criteriaArr, Operator:=xlFilterValues
+        End If
+    Next i
+
+    'Create/replace output sheet
+    Dim wsOut As Worksheet
+    Set wsOut = CreateOrReplaceSheet(wb, outputSheetName)
+
+    'Copy visible (filtered) range to output sheet
+    Dim vis As Range
+    On Error Resume Next
+    Set vis = rng.SpecialCells(xlCellTypeVisible)
+    On Error GoTo 0
+
+    wsOut.Cells.Clear
+
+    If Not vis Is Nothing Then
+        vis.Copy
+        wsOut.Range("A1").PasteSpecial Paste:=xlPasteValues
+        wsOut.Range("A1").PasteSpecial Paste:=xlPasteFormats
+        Application.CutCopyMode = False
+    Else
+        'No visible rows (unlikely, but safe handling)
+        wsOut.Range("A1").Value = "No data after filters for: " & sourceSheetName
+    End If
+
+CleanupFilters:
+    'Remove filters from source sheet
+    If ws.AutoFilterMode Then ws.AutoFilterMode = False
+
+End Sub
+
+Private Function GetHeaderColumnIndex(ByVal ws As Worksheet, ByVal headerName As String, ByVal lastCol As Long) As Long
+    'Find header in row 1, match exact text
+    Dim c As Long
+    For c = 1 To lastCol
+        If Trim$(CStr(ws.Cells(1, c).Value)) = headerName Then
+            GetHeaderColumnIndex = c
+            Exit Function
+        End If
+    Next c
+    GetHeaderColumnIndex = 0
+End Function
+
+Private Function CreateOrReplaceSheet(ByVal wb As Workbook, ByVal sheetName As String) As Worksheet
+    On Error Resume Next
+    Dim ws As Worksheet
+    Set ws = wb.Worksheets(sheetName)
+    On Error GoTo 0
+
+    If Not ws Is Nothing Then
+        Application.DisplayAlerts = False
+        ws.Delete
+        Application.DisplayAlerts = True
+    End If
+
+    Set CreateOrReplaceSheet = wb.Worksheets.Add(After:=wb.Worksheets(wb.Worksheets.Count))
+    CreateOrReplaceSheet.Name = sheetName
+End Function
+
+Private Sub DeleteBaseSheets(ByVal wb As Workbook)
+
+    Dim sheetsToDelete As Variant
+    sheetsToDelete = Array("Samer", "Prinu", "Ramy", "Amir", "Johny", "Michel", "Rabih")
+
+    Dim i As Long
+    Dim ws As Worksheet
+
+    Application.DisplayAlerts = False
+
+    For i = LBound(sheetsToDelete) To UBound(sheetsToDelete)
+        On Error Resume Next
+        Set ws = wb.Worksheets(sheetsToDelete(i))
+        On Error GoTo 0
+
+        If Not ws Is Nothing Then
+            ws.Delete
+        End If
+
+        Set ws = Nothing
+    Next i
+
+    Application.DisplayAlerts = True
+
+End Sub
+
+
+
+
