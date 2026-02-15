@@ -1,0 +1,12 @@
+gpt prompt.
+
+Hi we are going to work on macros files from now. 
+I already built a macros for some of the functions in the sales report that I have to work on a daily basis. I will narrate the whole story, so that you can have a picture of what to be done. I download the raw data with headers from oracle. i copy paste the raw data excluding the heading to the other main sheet that contains all the historic data. the thing about the main sheet is that it has additional formulas to interpret the data that is downloaded from the oracle. 
+once the data is copy pasted and the formula is dragged to the new copy pasted data, I will copy the formula part of the data and paste the same as values to reduce the latency of the excel workbook. 
+In the work book there are several pivot tables. so I will refresh and the job for the main report is done. 
+this workbook I share with the main stakeholder MR. Nader. 
+there are others like the managers- 7 people to whom only their team data has to be shared and 
+there are the salesmen in their respective teams who should receive only their data. Initially the count including all the reports is around 22 reports. 
+previously, the macros was built to be a static one, where the way the bifurcation needs to be done in within the macros code. Now I am planning to make the same macros dynamic, so that in future when the company tries to make changes to any of the data, only the changes are need to be done externally and the macros will read the changes and make the bifurcation as per the changes. 
+I will share the codes that I am using for bifurcation. you just have to make the code dynamic. 
+I will create a separate sheet in excel with the name "LOOKUP". Where the data points to be followed will be mentioned. the macros just have to follow the headers and do as per need. Here's the macros as follows. 
